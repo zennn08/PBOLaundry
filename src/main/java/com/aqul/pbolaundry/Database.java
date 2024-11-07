@@ -16,7 +16,7 @@ public class Database {
     private static Connection conn;
     public static Connection Connect() throws SQLException {
         if (conn == null) {
-            String jdbcUrl = "jdbc:mysql://127.0.0.1:3306/laundry";
+            String jdbcUrl = "jdbc:mysql://127.0.0.1:3306/db_laundry";
             String username = "root";
             String password = "";
             conn = DriverManager.getConnection(jdbcUrl, username, password);

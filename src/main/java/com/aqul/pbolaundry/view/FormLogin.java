@@ -62,6 +62,7 @@ public class FormLogin extends javax.swing.JFrame {
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setIconImage(new javax.swing.ImageIcon(getClass().getResource("/logo.png")).getImage());
         setUndecorated(true);
         addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
@@ -88,6 +89,7 @@ public class FormLogin extends javax.swing.JFrame {
         imageLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/laundry_logo.png"))); // NOI18N
 
         buttonClose.setForeground(new java.awt.Color(102, 102, 102));
+        buttonClose.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         buttonClose.setText("x");
         buttonClose.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         buttonClose.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -137,8 +139,6 @@ public class FormLogin extends javax.swing.JFrame {
 
         loginButton.setText("LOGIN");
         loginButton.setFillClick(new java.awt.Color(41, 128, 220));
-        loginButton.setFocusCycleRoot(true);
-        loginButton.setFocusPainted(true);
         loginButton.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         loginButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -287,7 +287,9 @@ public class FormLogin extends javax.swing.JFrame {
                             System.out.println("is_owner");
                         }
                         dispose();
-                        // new OrderCashier(creds).setVisible(true);
+                        FormMain formMain = new FormMain(creds);
+                        formMain.changePanelUtama(new MenuCreateOrder(creds));
+                        formMain.setVisible(true);
                     } else {
                         JOptionPane.showMessageDialog(this, "Password salah", "", JOptionPane.ERROR_MESSAGE);
                     }
