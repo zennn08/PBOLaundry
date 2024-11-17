@@ -32,9 +32,9 @@ public class FormMain extends javax.swing.JFrame {
         initComponents();
         this.creds = creds;
         
-        System.err.println(creds.getIsOwner());
         ownerLabel.setVisible(creds.getIsOwner());
         mainPanelHistoryOrder.setVisible(creds.getIsOwner());
+        mainPanelUser.setVisible(creds.getIsOwner());
         
         userLabel.setText(creds.getUsername());
         setTimer();
@@ -66,6 +66,10 @@ public class FormMain extends javax.swing.JFrame {
         linePanelHistoryOrder = new javax.swing.JPanel();
         iconHistoryOrder = new javax.swing.JLabel();
         buttonHistoryOrder = new javax.swing.JLabel();
+        mainPanelUser = new javax.swing.JPanel();
+        linePanelUser = new javax.swing.JPanel();
+        iconUser = new javax.swing.JLabel();
+        buttonUser = new javax.swing.JLabel();
         panelKanan = new javax.swing.JPanel();
         custom_JPanelGradient1 = new com.aqul.pbolaundry.palette.Custom_JPanelGradient();
         buttonClose = new javax.swing.JLabel();
@@ -300,6 +304,71 @@ public class FormMain extends javax.swing.JFrame {
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
+        mainPanelUser.setBackground(new java.awt.Color(255, 255, 255));
+
+        linePanelUser.setBackground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout linePanelUserLayout = new javax.swing.GroupLayout(linePanelUser);
+        linePanelUser.setLayout(linePanelUserLayout);
+        linePanelUserLayout.setHorizontalGroup(
+            linePanelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 8, Short.MAX_VALUE)
+        );
+        linePanelUserLayout.setVerticalGroup(
+            linePanelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 29, Short.MAX_VALUE)
+        );
+
+        iconUser.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        iconUser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons8-user-30.png"))); // NOI18N
+
+        buttonUser.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        buttonUser.setForeground(new java.awt.Color(102, 102, 102));
+        buttonUser.setText("User");
+        buttonUser.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        buttonUser.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buttonUserMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                buttonUserMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                buttonUserMouseExited(evt);
+            }
+        });
+
+        javax.swing.GroupLayout mainPanelUserLayout = new javax.swing.GroupLayout(mainPanelUser);
+        mainPanelUser.setLayout(mainPanelUserLayout);
+        mainPanelUserLayout.setHorizontalGroup(
+            mainPanelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mainPanelUserLayout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(iconUser)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(mainPanelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(mainPanelUserLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(linePanelUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(165, Short.MAX_VALUE)))
+        );
+        mainPanelUserLayout.setVerticalGroup(
+            mainPanelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelUserLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(mainPanelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(buttonUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(iconUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+            .addGroup(mainPanelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(mainPanelUserLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(linePanelUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+
         javax.swing.GroupLayout sidebarPanelLayout = new javax.swing.GroupLayout(sidebarPanel);
         sidebarPanel.setLayout(sidebarPanelLayout);
         sidebarPanelLayout.setHorizontalGroup(
@@ -320,7 +389,8 @@ public class FormMain extends javax.swing.JFrame {
                             .addGap(18, 18, 18)
                             .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(mainPanelStatusOrder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(mainPanelHistoryOrder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(mainPanelHistoryOrder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(mainPanelUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(24, 24, 24))
         );
         sidebarPanelLayout.setVerticalGroup(
@@ -340,7 +410,9 @@ public class FormMain extends javax.swing.JFrame {
                 .addComponent(ownerLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(mainPanelHistoryOrder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(324, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(mainPanelUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(276, Short.MAX_VALUE))
         );
 
         getContentPane().add(sidebarPanel, java.awt.BorderLayout.LINE_START);
@@ -521,6 +593,23 @@ public class FormMain extends javax.swing.JFrame {
         linePanelHistoryOrder.setBackground(new Color(255, 255, 255));
     }//GEN-LAST:event_buttonHistoryOrderMouseExited
 
+    private void buttonUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonUserMouseClicked
+        mainPanelUser.setBackground(new Color(240, 240, 240));
+        linePanelUser.setBackground(new Color(0, 102, 153));
+        
+        changePanelUtama(new MenuUser(this));
+    }//GEN-LAST:event_buttonUserMouseClicked
+
+    private void buttonUserMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonUserMouseEntered
+        mainPanelUser.setBackground(new Color(250, 250, 250));
+        linePanelUser.setBackground(new Color(0, 102, 153));
+    }//GEN-LAST:event_buttonUserMouseEntered
+
+    private void buttonUserMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonUserMouseExited
+        mainPanelUser.setBackground(new Color(250, 255, 255));
+        linePanelUser.setBackground(new Color(255, 255, 255));
+    }//GEN-LAST:event_buttonUserMouseExited
+
     public void changePanelUtama(javax.swing.JPanel panel) {
         panelUtama.removeAll();
         panelUtama.repaint();
@@ -551,19 +640,23 @@ public class FormMain extends javax.swing.JFrame {
     private javax.swing.JLabel buttonHistoryOrder;
     private javax.swing.JButton buttonProfile;
     private javax.swing.JLabel buttonStatusOrder;
+    private javax.swing.JLabel buttonUser;
     private com.aqul.pbolaundry.palette.Custom_JPanelGradient custom_JPanelGradient1;
     private javax.swing.JLabel dateLabel;
     private javax.swing.JLabel iconCreateOrder;
     private javax.swing.JLabel iconHistoryOrder;
     private javax.swing.JLabel iconStatusOrder;
+    private javax.swing.JLabel iconUser;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel linePanelCreateOrder;
     private javax.swing.JPanel linePanelHistoryOrder;
     private javax.swing.JPanel linePanelStatusOrder;
+    private javax.swing.JPanel linePanelUser;
     private javax.swing.JLabel mainLabel;
     private javax.swing.JPanel mainPanelCreateOrder;
     private javax.swing.JPanel mainPanelHistoryOrder;
     private javax.swing.JPanel mainPanelStatusOrder;
+    private javax.swing.JPanel mainPanelUser;
     private javax.swing.JLabel ownerLabel;
     private javax.swing.JPanel panelDasar;
     private javax.swing.JPanel panelKanan;

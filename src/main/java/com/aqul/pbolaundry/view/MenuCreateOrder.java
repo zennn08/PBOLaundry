@@ -14,9 +14,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -318,9 +323,9 @@ public class MenuCreateOrder extends javax.swing.JPanel {
                     String queryInsertOrder = "INSERT INTO orders (order_id, user_id, service_id, admin_id, status, amount, order_date, total_price, customer_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
                     PreparedStatement pstmt = conn.prepareStatement(queryInsertOrder);
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
+                    String orderId = generateOrderID();
                     // Mengisi nilai untuk parameter query
-                    pstmt.setString(1, generateOrderID()); // Kolom order_id
+                    pstmt.setString(1, orderId); // Kolom order_id
                     pstmt.setInt(2, userId);        // Kolom user_id
                     pstmt.setInt(3, service.getId());     // Kolom service_id
                     pstmt.setInt(4, creds.getId());       // Kolom admin_id
@@ -335,8 +340,10 @@ public class MenuCreateOrder extends javax.swing.JPanel {
 
                     // Cek apakah data berhasil dimasukkan
                     if (rowsInserted > 0) {
-                        System.out.println("Insert berhasil! " + rowsInserted + " baris dimasukkan.");
-                        JOptionPane.showMessageDialog(this, "Order berhasil dibuat", "Success", JOptionPane.INFORMATION_MESSAGE);
+                        int response = JOptionPane.showConfirmDialog(this, "Order berhasil dibuat. Apakah anda ingin mencetak struk?", "Success", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                        if (response == JOptionPane.YES_OPTION) {
+                            cetakInvoice(orderId);
+                        }
                         clearForm();
                     }
                 }
@@ -407,6 +414,19 @@ public class MenuCreateOrder extends javax.swing.JPanel {
         return "ORD" + formatter.format(date);
     }
     
+    private void cetakInvoice(String orderId) {
+        try {
+            String invoicePath = "src/main/resources/Invoice.jasper";
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("OrderId", orderId);
+            JasperPrint print = JasperFillManager.fillReport(invoicePath, params, Database.Connect());
+            JasperViewer viewer = new JasperViewer(print, false);
+            viewer.setVisible(true);
+        } catch (SQLException | JRException ex) {
+            System.err.println("PrintErr : " + ex.getMessage());
+        }
+        
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.aqul.pbolaundry.palette.Custom_JButtonRounded createOrderButton;
     private javax.swing.JLabel customerNameAlert;

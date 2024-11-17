@@ -4,19 +4,11 @@
  */
 package com.aqul.pbolaundry.view;
 
-import com.aqul.pbolaundry.Credential;
 import com.aqul.pbolaundry.Database;
-import com.aqul.pbolaundry.Service;
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -30,7 +22,7 @@ import okhttp3.Response;
  */
 public class MenuEditOrder extends javax.swing.JPanel {
 
-    private FormMain mainFrame;
+    private final FormMain mainFrame;
     /**
      * Creates new form menuCreateOrder
      */
@@ -319,6 +311,20 @@ public class MenuEditOrder extends javax.swing.JPanel {
                         Response response = client.newCall(request).execute();
                         if (!response.isSuccessful()) {
                             JOptionPane.showMessageDialog(this, "Gagal mengirim notifikasi ke Whatsapp", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                    String querySelectOrder = "SELECT user_id, total_price FROM orders WHERE order_id = ?";
+                    PreparedStatement preparedStatementSelect = Database.Connect().prepareStatement(querySelectOrder);
+                    preparedStatementSelect.setString(1, orderIdTextField.getText());
+                    ResultSet resultSet = preparedStatementSelect.executeQuery();
+                    if (resultSet.next()) {
+                        String queryUpdateUser = "UPDATE user SET point = point + ? WHERE user.id = ?";
+                        PreparedStatement prstmt = Database.Connect().prepareStatement(queryUpdateUser);
+                        prstmt.setInt(1, (int) Math.floor((int) resultSet.getInt("total_price") / 1000));
+                        prstmt.setString(2, resultSet.getString("user_id"));
+                        int rowUserAffected = prstmt.executeUpdate();
+                        if (rowUserAffected <= 0) {
+                            JOptionPane.showMessageDialog(this, "Gagal mengupdate point user", "Error", JOptionPane.ERROR_MESSAGE);
                         }
                     }
                     JOptionPane.showMessageDialog(this, "Order berhasil diupdate", "Success", JOptionPane.INFORMATION_MESSAGE);

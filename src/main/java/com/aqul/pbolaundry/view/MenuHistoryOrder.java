@@ -10,12 +10,18 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -40,7 +46,7 @@ public class MenuHistoryOrder extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        dateChooser1 = new com.raven.datechooser.DateChooser();
+        dateChooser = new com.raven.datechooser.DateChooser();
         jPanel1 = new javax.swing.JPanel();
         titleLabel = new javax.swing.JLabel();
         logo = new javax.swing.JLabel();
@@ -56,13 +62,14 @@ public class MenuHistoryOrder extends javax.swing.JPanel {
         monthLabel = new javax.swing.JLabel();
         monthField = new javax.swing.JLabel();
         monthIcon = new javax.swing.JLabel();
-        dateChooser = new com.aqul.pbolaundry.palette.Custom_JTextFieldRounded();
+        dateChooserField = new com.aqul.pbolaundry.palette.Custom_JTextFieldRounded();
         printButton = new com.aqul.pbolaundry.palette.Custom_JButtonRounded();
         jScrollPane1 = new javax.swing.JScrollPane();
         orderTable = new com.aqul.pbolaundry.palette.Custom_JTable();
 
-        dateChooser1.setDateSelectionMode(com.raven.datechooser.DateChooser.DateSelectionMode.BETWEEN_DATE_SELECTED);
-        dateChooser1.setTextField(dateChooser);
+        dateChooser.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
+        dateChooser.setDateSelectionMode(com.raven.datechooser.DateChooser.DateSelectionMode.BETWEEN_DATE_SELECTED);
+        dateChooser.setTextField(dateChooserField);
 
         setLayout(new java.awt.CardLayout());
 
@@ -202,6 +209,12 @@ public class MenuHistoryOrder extends javax.swing.JPanel {
                 .addGap(15, 15, 15))
         );
 
+        dateChooserField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dateChooserFieldActionPerformed(evt);
+            }
+        });
+
         printButton.setText("PRINT");
         printButton.setFillClick(new java.awt.Color(41, 128, 220));
         printButton.addActionListener(new java.awt.event.ActionListener() {
@@ -235,7 +248,7 @@ public class MenuHistoryOrder extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(titleLabel)
                         .addGap(307, 307, 307)
-                        .addComponent(dateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(dateChooserField, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(printButton, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -261,7 +274,7 @@ public class MenuHistoryOrder extends javax.swing.JPanel {
                         .addContainerGap(43, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(printButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(dateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(dateChooserField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(monthPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -276,8 +289,24 @@ public class MenuHistoryOrder extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void printButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printButtonActionPerformed
-        // TODO add your handling code here:
+        String dateChoose = dateChooserField.getText();
+        String[] date = dateChoose.split(" to ");
+        try {
+            String invoicePath = "src/main/resources/Report.jasper";
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("beforeDate", date[0] + " 00:00:00");
+            params.put("afterDate", (date.length > 1 ? date[1] : date[0]) + " 23:59:59");
+            JasperPrint print = JasperFillManager.fillReport(invoicePath, params, Database.Connect());
+            JasperViewer viewer = new JasperViewer(print, false);
+            viewer.setVisible(true);
+        } catch (SQLException | JRException ex) {
+            System.err.println("PrintErr : " + ex.getMessage());
+        }
     }//GEN-LAST:event_printButtonActionPerformed
+
+    private void dateChooserFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dateChooserFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dateChooserFieldActionPerformed
 
     private void getListOrder() {
         String[] coloumn = {"Order ID", "Tanggal", "Nama", "No. HP", "Status", "Layanan", "Berat", "Harga"};
@@ -350,8 +379,8 @@ public class MenuHistoryOrder extends javax.swing.JPanel {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.aqul.pbolaundry.palette.Custom_JTextFieldRounded dateChooser;
-    private com.raven.datechooser.DateChooser dateChooser1;
+    private com.raven.datechooser.DateChooser dateChooser;
+    private com.aqul.pbolaundry.palette.Custom_JTextFieldRounded dateChooserField;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel logo;
